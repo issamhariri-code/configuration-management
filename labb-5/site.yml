@@ -1,0 +1,12 @@
+---
+- name: Grundkonfiguration på samtliga noder
+  hosts: all
+  become: true
+  roles:
+    - common
+
+- name: Konfigurera webbservrar
+  hosts: webservers
+  become: true
+  roles:
+    - webserver

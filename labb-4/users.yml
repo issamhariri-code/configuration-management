@@ -1,0 +1,20 @@
+---
+- name: Skapa administratör på samtliga noder
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Skapa devops_admin med hemkatalog och sudo-grupp
+      ansible.builtin.user:
+        name: devops_admin
+        state: present
+        create_home: true
+        shell: /bin/bash
+        groups: sudo
+        append: true
+
+    - name: Lägg till användarens publika SSH-nyckel
+      ansible.posix.authorized_key:
+        user: devops_admin
+        state: present
+        key: "{{ lookup('file', '~/.ssh/devops_admin.pub') }}"

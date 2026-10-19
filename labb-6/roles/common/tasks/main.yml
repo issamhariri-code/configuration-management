@@ -1,0 +1,24 @@
+---
+- name: Installera gemensamma paket
+  ansible.builtin.apt:
+    name:
+      - curl
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Skapa devops_admin med hemkatalog och sudo-grupp
+  ansible.builtin.user:
+    name: devops_admin
+    state: present
+    create_home: true
+    shell: /bin/bash
+    groups: sudo
+    append: true
+
+- name: Lägg till användarens publika SSH-nyckel
+  ansible.posix.authorized_key:
+    user: devops_admin
+    state: present
+    key: "{{ lookup('file', '~/.ssh/devops_admin.pub') }}"
+# tasks file for roles/common

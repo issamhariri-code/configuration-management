@@ -1,0 +1,6 @@
+---
+- name: Starta om Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+# handlers file for roles/webserver

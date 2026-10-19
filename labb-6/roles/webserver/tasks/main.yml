@@ -1,0 +1,31 @@
+---
+- name: Installera Nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Säkerställ att Nginx är igång
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
+
+- name: Skapa webbsidan från Jinja2 mallen
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0664'
+
+- name: Konfigurera Nginx
+  ansible.builtin.template:
+    src: default.conf.j2
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Starta om Nginx 
+# tasks file for roles/webserver

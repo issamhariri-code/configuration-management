@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab 6 – Serverinformation</title>
+</head>
+<body>
+    <h1>Min webbserver – Lab 6</h1>
+    <p>Den här sidan skapades med Ansible och Jinja2.</p>
+
+    <ul>
+        <li>Hostname: {{ ansible_facts['hostname'] }}</li>
+        <li>IP-adress: {{ ansible_facts['default_ipv4']['address'] }}</li>
+        <li>Operativsystem: {{ ansible_facts['system'] }}</li>
+        <li>Distribution: {{ ansible_facts['distribution'] }}</li>
+        <li>Version: {{ ansible_facts['distribution_version'] }}</li>
+    </ul>
+</body>
+</html>

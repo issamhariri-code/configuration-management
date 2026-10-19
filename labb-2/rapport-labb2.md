@@ -24,10 +24,23 @@ Diagrammet visar hur jag använder kontrollnoden för att kommunicera med de tv�
 målservrarna:
 
 ```mermaid
-flowchart LR
-    A[Kontrollnod<br/>controlnode] --> B[Ansible]
-    B --> C[Målserver 1<br/>issamnode1.local]
-    B --> D[Målserver 2<br/>issamnode2.local]
+flowchart TB
+    A["Lab 2 – Ansible och kontrollnod<br/><br/>Jag använder Ansible från controlnode<br/>för att kommunicera med mina målservrar."]
+
+    B["Kontrollnod<br/><br/>controlnode"]
+
+    C["Ansible<br/><br/>Jag använder Ansible från kontrollnoden<br/>för att kommunicera med mina målservrar."]
+
+    D["Målservrar<br/><br/>Målserver 1: issamnode1.local<br/>Målserver 2: issamnode2.local"]
+
+    A --> B --> C --> D
+
+    classDef title fill:#1e3a5f,color:#ffffff,stroke:#1e3a5f
+    classDef step fill:#f0f6ff,color:#172554,stroke:#93b4d8
+    classDef result fill:#edf8f1,color:#14532d,stroke:#86b99a
+    class A title
+    class B,C step
+    class D result
 ```
 
 IP-adresserna i filen `ip addresser linux.txt` är tidigare anteckningar och jag
@@ -83,5 +96,3 @@ ansible all -i 'issamnode1.local,issamnode2.local,' -m setup -a "filter=ansible_
 Båda noderna gav `SUCCESS` och distributionen identifierades som `Ubuntu`.
 
 ![Resultat från kontroll av Ubuntu-distribution](ubuntu.png)
-
-

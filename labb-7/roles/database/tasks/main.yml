@@ -1,0 +1,16 @@
+---
+- name: Installera MariaDB och Python-stöd
+  ansible.builtin.apt:
+    name:
+      - mariadb-server
+      - python3-pymysql
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Säkerställ att MariaDB är igång
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: true
+# tasks file for roles/database

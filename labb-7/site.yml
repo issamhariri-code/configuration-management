@@ -1,0 +1,26 @@
+---
+- name: Konfigurera databas och användare
+  hosts: dbservers
+  become: true
+
+  roles:
+    - database
+
+  tasks:
+    - name: Skapa labbdatabasen
+      community.mysql.mysql_db:
+        name: labbdb
+        state: present
+        login_user: root
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Skapa databasanvändaren
+      community.mysql.mysql_user:
+        name: labbuser
+        host: localhost
+        password: "{{ vault_db_password }}"
+        priv: 'labbdb.*:ALL'
+        state: present
+        login_user: root
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+      no_log: true

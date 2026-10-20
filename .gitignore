@@ -1,0 +1,26 @@
+# Vault-lösenord och lokala miljöfiler
+.vault_pass*
+.vault-pass*
+vault_pass*
+vault-password*
+.env
+.env.*
+!.env.example
+
+# Privata SSH-nycklar (publika .pub-filer omfattas inte)
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+devops_admin
+*.key
+
+# Tillfälliga filer och loggar
+*.retry
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+
+# Krypterade group_vars/all/vault.yml ska finnas med i Git.

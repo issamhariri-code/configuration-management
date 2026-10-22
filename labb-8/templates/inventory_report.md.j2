@@ -1,0 +1,26 @@
+# Serverrapport – {{ ansible_facts['hostname'] }}
+
+## Grundinformation
+
+| Egenskap | Värde |
+| --- | --- |
+| Inventory-namn | {{ inventory_hostname }} |
+| Hostname | {{ ansible_facts['hostname'] }} |
+| Virtuella processorer | {{ ansible_facts['processor_vcpus'] }} |
+| Arkitektur | {{ ansible_facts['architecture'] }} |
+| RAM | {{ ansible_facts['memtotal_mb'] }} MiB |
+| IPv4-adresser | {{ ansible_facts['all_ipv4_addresses'] | join(', ') }} |
+| Distribution | {{ ansible_facts['distribution'] }} |
+| OS-version | {{ ansible_facts['distribution_version'] }} |
+| Kärna | {{ ansible_facts['kernel'] }} |
+| Antal paketnamn | {{ ansible_facts['packages'] | length }} |
+
+## Installerade paket
+
+| Paket | Version |
+| --- | --- |
+{% for package_name, package_versions in ansible_facts['packages'] | dictsort %}
+{% for package in package_versions %}
+| {{ package_name }} | {{ package['version'] }} |
+{% endfor %}
+{% endfor %}

@@ -1,0 +1,34 @@
+---
+- name: Samla information till CMDB-underlag
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Samla information till installerade paket
+      ansible.builtin.package_facts:
+        manager: auto
+
+
+    - name: Visa sammanfattning av insamlade facts
+      ansible.builtin.debug:
+        msg:
+          - "Hostname: {{ ansible_facts['hostname'] }}"
+          - "vCPU: {{ ansible_facts['processor_vcpus'] }}"
+          - "RAM: {{ ansible_facts['memtotal_mb'] }} MiB"
+          - "IPv4 {{ ansible_facts['all_ipv4_addresses'] | join(', ') }}"
+          - "OS: {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}"
+          - "Antal paketnamn: {{ ansible_facts['packages'] | length }}"
+
+    - name: Skapa serverns rapportmapp på controlnode
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/reports/{{ inventory_hostname }}"
+        state: directory
+        mode: '0755'
+      delegate_to: localhost
+
+    - name: Generera serverrapport på controlnode
+      ansible.builtin.template:
+        src: templates/inventory_report.md.j2
+        dest: "{{ playbook_dir }}/reports/{{ inventory_hostname }}/inventory_report.md"
+        mode: '0644'
+      delegate_to: localhost

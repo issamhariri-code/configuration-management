@@ -1,0 +1,1 @@
+{"ssh_nodes": {"hosts": ["issamnode1.local", "issamnode2.local"], "vars": {"ansible_user": "issam"}}, "controlnode": {"hosts": ["localhost"], "vars": {"ansible_connection": "local"}}}

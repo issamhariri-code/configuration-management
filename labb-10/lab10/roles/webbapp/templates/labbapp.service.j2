@@ -1,0 +1,15 @@
+[Unit]
+Description=Labb 10 - Flask och MariaDB på {{ inventory_hostname }}
+After=network.target
+
+[Service]
+Type=exec
+User=webapp
+Group=webapp
+WorkingDirectory=/opt/labbapp
+ExecStart=/opt/labbapp/venv/bin/gunicorn --workers 2 --bind 127.0.0.1:8000 app:app
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,114 @@
+---
+- name: Installera Nginx och Python-verktyg
+  ansible.builtin.apt:
+    name:
+      - nginx
+      - python3-venv
+      - python3-pip
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Skapa webbappens installationsmapp
+  ansible.builtin.file:
+    path: /opt/labbapp
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Installera webbappens Python-bibliotek
+  ansible.builtin.pip:
+    name:
+      - flask
+      - gunicorn
+      - pymysql
+    virtualenv: /opt/labbapp/venv
+    virtualenv_command: /usr/bin/python3 -m venv
+    state: present
+- name: Skapa webbappens systemgrupp
+  ansible.builtin.group:
+    name: webapp
+    system: true
+    state: present
+
+- name: Skapa webbappens tjänstekonto
+  ansible.builtin.user:
+    name: webapp
+    group: webapp
+    system: true
+    create_home: false
+    shell: /usr/sbin/nologin
+    state: present
+
+- name: Skapa webbappens konfigurationsmapp
+  ansible.builtin.file:
+    path: /etc/labbapp
+    state: directory
+    owner: root
+    group: webapp
+    mode: "0750"
+
+- name: Skapa webbappens databasinställningar
+  ansible.builtin.template:
+    src: config.json.j2
+    dest: /etc/labbapp/config.json
+    owner: root
+    group: webapp
+    mode: "0640"
+  no_log: true
+  diff: false
+  notify: Starta om webbappen
+
+- name: Kopiera webbappens Python-kod
+  ansible.builtin.copy:
+    src: app.py
+    dest: /opt/labbapp/app.py
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Starta om webbappen
+
+- name: Installera om webbappens tjänstefil
+  ansible.builtin.template:
+    src: labbapp.service.j2
+    dest: /etc/systemd/system/labbapp.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Starta om webbappen
+
+- name: Säkerställ att webbappen är igång
+  ansible.builtin.systemd_service:
+    name: labbapp
+    daemon_reload: true
+    state: started
+    enabled: true
+
+- name: Konfigurera Nginx som reverse proxy
+  ansible.builtin.template:
+    src: nginx-labbapp.conf.j2
+    dest: /etc/nginx/sites-available/default
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Ladda om Nginx
+
+- name: Aktivera Nginx Konfigurationen
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    state: link
+  notify: Ladda om Nginx
+
+- name: Kontrollera Nginx konfigurationen
+  ansible.builtin.command: /usr/sbin/nginx -t
+  changed_when: false
+
+- name: Säkerställ att Nginx är igång
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
+
+# tasks file for webbapp

@@ -1,0 +1,26 @@
+---
+- name: Installera MariaDB och Python-stöd
+  ansible.builtin.apt:
+    name:
+      - mariadb-server
+      - python3-pymysql
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Säkerställ att MariaDB är igång
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Konfigurera MariaDB nätverksaddress
+  ansible.builtin.template:
+    src: network.cnf.j2
+    dest: /etc/mysql/mariadb.conf.d/99-lab10-network.cnf
+    owner: root
+    group: root
+    mode: "0644"
+
+  notify: Starta om MariaDB
+# tasks file for roles/database

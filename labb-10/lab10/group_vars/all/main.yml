@@ -1,0 +1,8 @@
+---
+
+db_host: "10.6.69.98"
+db_port: 3306
+db_name: "labbdb"
+db_user: "labbapp"
+
+web_host: "10.6.69.99"

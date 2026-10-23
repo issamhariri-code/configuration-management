@@ -1,0 +1,52 @@
+---
+- name: Konfigurera databas och användare
+  hosts: dbservers
+  become: true
+
+  roles:
+    - database
+
+  tasks:
+    - name: Skapa labbdatabasen
+      community.mysql.mysql_db:
+        name: "{{ db_name }}"
+        state: present
+        login_user: root
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Skapa databasanvändaren för webbappen
+      community.mysql.mysql_user:
+        name: "{{ db_user }}"
+        host: "{{ web_host }}"
+        password: "{{ vault_db_password }}"
+        priv: "{{ db_name }}.*:SELECT"
+        state: present
+        login_user: root
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+      no_log: true
+
+    - name: Skapa tabell och testdata till webbappen
+      community.mysql.mysql_query:
+        login_user: root
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        login_db: "{{ db_name }}"
+        query:
+          - |
+            CREATE TABLE IF NOT EXISTS messages (
+              id INT PRIMARY KEY,
+              message VARCHAR(255) NOT NULL
+            )
+          - |
+            INSERT INTO messages (id, message)
+            VALUES (1, 'Hej Issam! Detta meddelande kommer från MariaDB på node2.')
+            ON DUPLICATE KEY UPDATE message = VALUES(message)
+      register: db_seed
+      changed_when: (db_seed.rowcount | default([]) | sum) > 0
+
+
+- name: Konfigurera webbappen
+  hosts: webservers
+  become: true
+
+  roles:
+    - webbapp

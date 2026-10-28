@@ -1,5 +1,9 @@
 # Relationer och beroenden i labbmiljön
 
+Den här filen beskriver läget vid Lab 8. I Lab 10 kopplades webbappen till
+databasen. Den färdiga miljön och dess beroenden beskrivs i
+[ARCHITECTURE.md](../ARCHITECTURE.md).
+
 ## Nuvarande relationer
 
 Här har jag samlat hur anslutningarna ser ut i labbmiljön. Pilarna visar vem som ansluter till vem. Controlnode administrerar båda noderna via SSH, medan webbläsaren på värddatorn ansluter till Nginx via HTTP.

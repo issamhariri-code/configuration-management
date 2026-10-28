@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import json
 import argparse
-with open('/home/issam/lab9/servers.json', 'r') as file:
+from pathlib import Path
+with open(Path(__file__).resolve().with_name('servers.json'), 'r', encoding='utf-8') as file:
 	servers = json.load(file)
 
 parser = argparse.ArgumentParser()

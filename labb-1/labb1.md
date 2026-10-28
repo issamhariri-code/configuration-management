@@ -29,3 +29,8 @@ ansible all -i inventory.ini -m ping
 Både `issamnode1.local` och `issamnode2.local` svarade med `SUCCESS` och `"ping": "pong"`. Det visar att Ansible kunde ansluta till båda målnoderna och köra ping-modulen.
 
 ![Ansible-ping från controlnode med lyckat svar från båda målnoderna](labb-1-resultat.png)
+
+## Körbar inventory
+
+I Lab 12 kompletterades [inventory.ini](inventory.ini) med samma noder och
+ansible_user satt till issam, så att anslutningstestet kan köras från repot.

@@ -146,9 +146,9 @@ Datakällan i den här labben är en lokal fil som läses vid varje körning.
 Ett API kan senare användas som källa, men den lösning jag har testat här är
 filbaserad och serverlistan underhålls i servers.json.
 
-## Det färdiga inventoryskriptet
+## Inventoryskriptet vid labb 9
 
-Koden i [dynamic_inventory.py](dynamic_inventory.py) är:
+Versionen som användes vid labb 9 såg ut så här:
 
 ```python
 #!/usr/bin/env python3
@@ -250,7 +250,18 @@ Källkoden finns i [dynamic_inventory.py](dynamic_inventory.py) och datakällan
 i [servers.json](servers.json). Skriptet använder Pythons standardbibliotek.
 SSH-åtkomsten till noderna fanns från tidigare labbar.
 
-Körningen gjordes från /home/issam/lab9 på controlnode. Den inlämnade
-Pythonfilen läser data från den fasta sökvägen /home/issam/lab9/servers.json.
-Vid återanvändning på en annan plats behöver den sökvägen anpassas eller
-filerna placeras som vid labbkörningen.
+Körningen gjordes från /home/issam/lab9 på controlnode. Då läste Pythonfilen
+servers.json från den fasta sökvägen /home/issam/lab9/servers.json.
+
+
+## Flyttbar sökväg i Lab 12
+
+Vid sammanställningen i Lab 12 ändrades filinläsningen i
+[dynamic_inventory.py](dynamic_inventory.py) så att servers.json söks bredvid
+skriptet. Path(__file__).resolve().with_name('servers.json') gör att skriptet
+kan användas från en annan kontrollnod och arbetsmapp. Argumenten --list och
+--host fungerar som tidigare.
+
+Den uppdaterade versionen testades lokalt från en annan sökväg och med / som
+arbetsmapp. JSON-svaret stämde och Ansible kunde tolka inventoryt. De tidigare
+skärmbilderna ovan visar labb 9-körningarna på controlnode.

@@ -4,7 +4,7 @@ Jag körde Ansible från controlnode och satte upp Nginx på issamnode1.local.
 
 ## Inventory
 
-Jag skapade inventory.ini och lade min första nod i gruppen webservers:
+Jag skapade [inventory.ini](inventory.ini) och lade min första nod i gruppen webservers:
 
 ```ini
 [webservers]
@@ -26,6 +26,10 @@ Jag fick SUCCESS och pong från min nod.
 ![Test av anslutningen](labb3.png)
 
 ## Playbooken web.yml
+
+Koden finns i [web.yml](web.yml). Filen kompletterades från den sparade
+skärmbilden vid sammanställningen i Lab 12 och jämfördes även med
+originalet på controlnode.
 
 Jag använde hosts: webservers för att välja min nod och become: true för att
 använda sudo.

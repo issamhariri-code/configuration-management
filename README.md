@@ -1,6 +1,6 @@
-# Configuration Management – samlat automationsprojekt (VG)
+# Configuration Management – samlat automationsprojekt 
 
-Här samlade vi ihop det vi gjort i labbarna och gick igenom VG-kraven.
+Här samlade jag ihop det vi gjort i labbarna och gick igenom VG-kraven.
 Fick ordning på filerna som saknades, körinstruktionerna och beskrivningen
 av hur miljön hänger ihop. Labbarna ligger kvar i egna mappar med kod,
 rapporter och bilder. Det här är slutsammanställningen för Lab 12.
